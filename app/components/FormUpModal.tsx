@@ -1,0 +1,208 @@
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { useFormik } from 'formik';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { XCircle, LogIn, UserCog } from 'lucide-react';
+
+const SignUpModal = () => {
+  const fieldSt = "text-gray-700 w-full px-4 py-3 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0e5ddd] transition-all duration-200";
+
+  const [phone, setPhone] = useState('');
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: '',
+      age: '',
+      gender: '',
+      phone: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    onSubmit: (values) => {
+      console.log('Form Data →', { ...values, phone });
+      alert('Signup Successful!');
+    },
+  });
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[94vh] my-3 flex flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-0">
+
+          {/* LEFT – Promo */}
+          <div className="relative bg-gradient-to-br from-[#0e5ddd] to-[#3b82f6] 
+                          flex flex-col items-center justify-center text-white p-6 lg:p-10">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-10 left-20 w-2 h-2 bg-white rounded-full opacity-60"></div>
+              <div className="absolute top-32 right-32 w-1.5 h-1.5 bg-white rounded-full opacity-70"></div>
+              <div className="absolute bottom-40 left-1/3 w-2 h-2 bg-white rounded-full"></div>
+              <div className="absolute top-1/2 -left-10 w-40 h-1 bg-white rotate-45 blur-md"></div>
+              <div className="absolute bottom-20 -right-10 w-52 h-1 bg-white -rotate-45 blur-md"></div>
+            </div>
+
+            <div className="text-center z-10">
+              <div className="w-32 h-32 mx-auto bg-white rounded-full shadow-2xl overflow-hidden mb-6 flex items-center justify-center">
+                <Image src="/mentor.png" alt="Mentor Lagbe" width={150} height={150} className="object-contain" />
+              </div>
+              <h1 className="text-3xl lg:text-4xl font-bold mb-4">Start Your Learning Journey</h1>
+              <p className="text-base opacity-90 leading-relaxed">
+                Join thousands of students and teachers in Bangladesh's leading e-learning platform for quality education and skill development.
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT – Form */}
+          <div className="flex flex-col overflow-y-auto p-5 lg:p-8">
+            <div className="max-w-md mx-auto w-full">
+
+              {/* Top Bar */}
+              <div className="flex justify-between items-center mb-6">
+                <div className="bg-gray-100 rounded-full p-1 flex items-center">
+                  <button className="flex items-center gap-2 px-6 py-2.5 bg-[#0e5ddd] text-white rounded-full font-medium text-sm">
+                    <LogIn size={18} />
+                    <span>Signup</span>
+                  </button>
+                  <button className="flex items-center gap-2 px-6 py-2.5 text-gray-600 rounded-full font-medium text-sm hover:text-gray-900">
+                    <UserCog size={18} />
+                    <span>Login</span>
+                  </button>
+                </div>
+                <XCircle className="text-gray-400 cursor-pointer" size={28} />
+              </div>
+
+              <h2 className="text-gray-600 text-2xl font-bold text-center mb-1.5">Create Your Account</h2>
+              <p className="text-center text-gray-600 mb-6 text-sm">
+                Join <span className='text-blue-500 font-medium'>Mentor Lagbe</span> and start your learning journey
+              </p>
+
+              <form onSubmit={formik.handleSubmit} className="space-y-5">
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                  <input type="text" name="fullName" onChange={formik.handleChange} value={formik.values.fullName}
+                    placeholder="Enter your full name" className={fieldSt} />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                    <input type="number" name="age" onChange={formik.handleChange} value={formik.values.age}
+                      placeholder="Enter your age" className={fieldSt} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                    <div className="flex gap-6 mt-3">
+                      <label className="flex items-center cursor-pointer">
+                        <input type="radio" name="gender" value="male" checked={formik.values.gender === 'male'}
+                          onChange={formik.handleChange} className="w-4 h-4 text-[#0e5ddd]" />
+                        <span className="ml-2 text-gray-600">Male</span>
+                      </label>
+                      <label className="flex items-center cursor-pointer">
+                        <input type="radio" name="gender" value="female" checked={formik.values.gender === 'female'}
+                          onChange={formik.handleChange} className="w-4 h-4 text-[#0e5ddd]" />
+                        <span className="ml-2 text-gray-600">Female</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Phone & Email  */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <PhoneInput
+                      country="bd"
+                      value={phone}
+                      onChange={(phone) => {
+                        setPhone(phone);
+                        formik.setFieldValue('phone', phone);
+                      }}
+                      inputProps={{
+                        name: 'phone',
+                        required: true,
+                      }}
+                      containerStyle={{}}
+                      inputStyle={{
+                        color:'#363636ff',
+                        width: '100%',
+                        height: '48px',
+                        fontSize: '15px',
+                        borderRadius: '12px',
+                        border: 'none',
+                        backgroundColor: '#f3f4f6',
+                        paddingLeft: '50px',
+                      }}
+                      buttonStyle={{
+                        borderRadius: '12px 0 0 12px',
+                        backgroundColor: '#f3f4f6',
+                        border: 'none',
+                      }}
+                      dropdownStyle={{ borderRadius: '12px' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                      placeholder="example@gmail.com"
+                      className={fieldSt}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                  <input type="password" name="password" onChange={formik.handleChange} value={formik.values.password}
+                    placeholder="Create a strong password" className={fieldSt} />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                  <input type="password" name="confirmPassword" onChange={formik.handleChange} value={formik.values.confirmPassword}
+                    placeholder="Re-enter your password" className={fieldSt} />
+                </div>
+
+                <button type="submit"
+                  className="w-full bg-[#0e5ddd] hover:bg-[#0d4bb5] text-white font-semibold py-3.5 rounded-xl transition">
+                  Continue
+                </button>
+              </form>
+
+              <p className="text-center text-gray-600 mt-4 text-sm">
+                Already have an account? <a href="#" className="text-[#0e5ddd] font-medium hover:underline">Log In</a>
+              </p>
+
+              <div className="mt-4 text-center pb-4">
+                <div className="flex items-center text-gray-500 mb-3">
+                  <hr className="w-full border-gray-300" />
+                  <span className="px-4 text-xs font-medium">or</span>
+                  <hr className="w-full border-gray-300" />
+                </div>
+
+                <p className="text-xs text-gray-500 mb-4">For faster login or signup use your social account</p>
+                <div className="flex justify-center gap-5">
+                  <button className="p-3.5 bg-gray-100 rounded-full hover:bg-gray-200 transition-all shadow-sm">
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width={26} height={26} className="object-contain" />
+                  </button>
+                  <button className="p-3.5 bg-gray-100 rounded-full hover:bg-gray-200 transition-all shadow-sm">
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" alt="Facebook" width={26} height={26} className="object-contain" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SignUpModal;
