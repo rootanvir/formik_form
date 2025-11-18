@@ -58,7 +58,7 @@ const SignUp = () => {
 
             <div className="text-center z-10">
               <div className="w-32 h-32 mx-auto bg-white rounded-full shadow-2xl overflow-hidden mb-6 flex items-center justify-center">
-                <Image src="/mentor.png" alt="Mentor Lagbe" width={150} height={150} className="object-contain" />
+                <Image src="/Mentor.png" alt="Mentor Lagbe" width={150} height={150} className="object-contain" />
               </div>
               <h1 className="text-3xl lg:text-4xl font-bold mb-4">Start Your Learning Journey</h1>
               <p className="text-base opacity-90 leading-relaxed">
