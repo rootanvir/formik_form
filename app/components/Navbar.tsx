@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Github } from 'lucide-react'
 
 interface NavbarProps {
     onSignUpClick: () => void;
@@ -31,8 +32,18 @@ const Navbar: React.FC<NavbarProps> = ({ onSignUpClick }) => {
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-4 ">
-                    <button onClick={onSignUpClick} className='cursor-pointer'>Sign Up</button>
+                <div className="flex items-center gap-10 ">
+                    <Link href="https://github.com/rootanvir/formik_form" className="hover:text-blue-400 transition">
+                        <div className='flex items-center gap-2'>
+                            <Github
+                                width={20}
+                                height={20}
+                            />
+                            <p>Github</p>
+
+                        </div>
+                    </Link>
+                    <button onClick={onSignUpClick} className='cursor-pointer hover:text-blue-500'>Sign Up</button>
 
                 </div>
             </div>
