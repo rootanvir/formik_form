@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import { XCircle, LogIn, UserCog } from 'lucide-react';
 import * as Yup from 'yup';
 
-const SignUpModal = () => {
+const SignUp = () => {
   const fieldSt = "text-gray-700 w-full px-4 py-3 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0e5ddd] transition-all duration-200 border border-transparent";
   const errorFieldSt = "border-red-500 focus:ring-red-500";
 
@@ -42,7 +42,6 @@ const SignUpModal = () => {
   });
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[94vh] my-3 flex flex-col">
         <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-0">
 
@@ -84,7 +83,6 @@ const SignUpModal = () => {
                     <span>Login</span>
                   </button>
                 </div>
-                <XCircle className="text-gray-400 cursor-pointer hover:text-gray-600 transition" size={28} />
               </div>
 
               <h2 className="text-gray-800 text-2xl font-bold text-center mb-1.5">Create Your Account</h2>
@@ -121,7 +119,7 @@ const SignUpModal = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.age}
-                      placeholder="e.g. 18"
+                      placeholder="Enter your age"
                       className={`${fieldSt} ${formik.touched.age && formik.errors.age ? errorFieldSt : ''}`}
                     />
                     {formik.touched.age && formik.errors.age && (
@@ -266,7 +264,7 @@ const SignUpModal = () => {
                   <hr className="w-full border-gray-300" />
                 </div>
                 <p className="text-xs text-gray-500 mb-4">For faster login or signup use your social account</p>
-                <div className="flex justify-center gap-5">
+                <div className="flex justify-center gap-5 mb-4">
                   <button className="p-3.5 bg-gray-100 rounded-full hover:bg-gray-200 transition-all shadow-sm">
                     <Image src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width={26} height={26} />
                   </button>
@@ -279,8 +277,7 @@ const SignUpModal = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default SignUpModal;
+export default SignUp;
