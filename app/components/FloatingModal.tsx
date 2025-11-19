@@ -33,9 +33,9 @@ const FloatingModal: React.FC<Props> = ({ isOpen, onClose, children }) => {
       >
         <button
           onClick={onClose}
-          className="cursor-pointer absolute top-5 right-4 z-10 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-lg transition hover:scale-110"
+          className="cursor-pointer absolute top-6 right-3 z-10 w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-lg transition hover:scale-110"
         >
-          <X width={30} height={30} />
+          <X width={25} height={25} />
         </button>
 
         <div className="h-full overflow-y-auto">
