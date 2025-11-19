@@ -11,7 +11,13 @@ const SignUp = () => {
   const errorFieldSt = "border-red-500 focus:ring-red-500";
 
   const validationSchema = Yup.object({
-    fullName: Yup.string().required('Full name is required').min(3),
+    fullName: Yup.string()
+  .required('Full name is required')
+  .min(3, 'Name must be at least 3 characters')
+  .matches(
+    /^[A-Za-z. ]+$/,
+    'Name can only contain letters, spaces, and dots (.)'
+  ),
     age: Yup.number().required('Age is required').min(9).max(100),
     gender: Yup.string().oneOf(['male', 'female'], 'Select gender').required(),
     phone: Yup.string()
