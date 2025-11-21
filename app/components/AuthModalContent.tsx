@@ -15,12 +15,12 @@ const AuthModalContent = () => {
       <div
         className="absolute z-50 
           top-5 right-10
-          sm:top-5 sm:right-30
+          sm:top-8 sm:right-50
           lg:top-8 lg:right-70
           xl:top-8 xl:right-70
         "
       >
-        <div className="bg-white/95 backdrop-blur-md rounded-full p-1 flex border border-gray-200 shadow-xl">
+        <div className="bg-white rounded-full p-1 flex border border-gray-200 ">
           {/* Signup Button */}
           <button
             onClick={() => setIsLogin(false)}
