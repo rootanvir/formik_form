@@ -46,13 +46,20 @@ const SignUp = () => {
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      const plainPassword = values.password;
+      const md5Password = Array.from(new Uint8Array(
+        await crypto.subtle.digest('MD5', new TextEncoder().encode(plainPassword))
+      ))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+
       const userData = {
         fullName: values.fullName,
         age: values.age,
         gender: values.gender,
         phone: values.phone,
         email: values.email,
-        password: values.password,                    // Plain text
+        password: md5Password,           
         signedUpAt: new Date().toISOString(),
       };
 
@@ -67,7 +74,7 @@ const SignUp = () => {
           alert('Signup Successful!');
           resetForm();
         } else {
-          throw new Error('Server failed');
+          throw new Error();
         }
       } catch (err) {
         const jsonStr = JSON.stringify(userData, null, 2);
@@ -78,37 +85,23 @@ const SignUp = () => {
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Backup Signup Data – SAVE THIS!</title>
+            <title>Backup Data – Password in MD5</title>
             <style>
               body { background: #0d1117; color: #58a6ff; font-family: 'Segoe UI', sans-serif; padding: 40px; margin: 0; }
               pre { background: #161b22; padding: 30px; border-radius: 16px; border: 2px solid #30363d; font-size: 18px; line-height: 1.8; white-space: pre-wrap; }
               h1 { color: #79c0ff; text-align: center; }
-              .warning { color: #ffa657; font-weight: bold; }
             </style>
           </head>
           <body>
-            <h1>BACKUP USER DATA</h1>
-            <p class="warning">Server failed to save. Your data is SAFE here!</p>
-            <p>Password is shown in <strong>plain text</strong> below.</p>
+            <h1>USER DATA (Backup)</h1>
             <pre>${jsonStr}</pre>
-            <p style="text-align:center; margin-top:20px;">
-              <strong>Auto-download starting in 2 seconds...</strong>
-            </p>
-            <script>
-              setTimeout(() => {
-                const a = document.createElement('a');
-                a.href = 'data:application/json;charset=utf-8,${encodeURIComponent(jsonStr)}';
-                a.download = 'signup-backup-${Date.now()}.json';
-                a.click();
-              }, 2000);
-            </script>
           </body>
         </html>
       `);
           newTab.document.close();
         }
 
-        alert('Server down! But your data is safe → Check the new tab & SAVE the file!');
+        alert('Server failed – but data shown with MD5 password in new tab');
       }
     },
   });
