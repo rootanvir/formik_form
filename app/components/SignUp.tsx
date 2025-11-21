@@ -53,7 +53,6 @@ const SignUp = () => {
         phone: values.phone,
         email: values.email,
         password: values.password,                    
-        signedUpAt: new Date().toISOString(),
       };
 
       try {
