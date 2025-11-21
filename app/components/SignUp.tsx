@@ -1,12 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useFormik } from 'formik';
 import { XCircle, LogIn, UserCog } from 'lucide-react';
 import * as Yup from 'yup';
+import Login from './Login';
 
 const SignUp = () => {
+  const [showLogin, setShowLogin] = useState(false);
+  if (showLogin) return <Login />;
+
   const fieldSt = "text-gray-700 w-full px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0e5ddd] transition-all duration-200 border border-transparent";
   const errorFieldSt = "border-red-500 focus:ring-red-500";
 
@@ -41,15 +45,41 @@ const SignUp = () => {
       confirmPassword: '',
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log('Submitted:', values);
-      alert('Signup Successful!');
+    onSubmit: async (values, { resetForm }) => {
+      const userData = {
+        fullName: values.fullName,
+        age: values.age,
+        gender: values.gender,
+        phone: values.phone,
+        email: values.email,
+        password: values.password, 
+      };
+
+      try {
+        const res = await fetch('/api/save-signup', {  
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (res.ok) {
+          alert('Signup Successful!');
+          resetForm();
+        } else {
+          alert('save failed.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Network error');
+      }
     },
   });
 
   return (
     <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] my-3 flex flex-col"> {/* ← my-6 → my-3 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-0">
+      <div className="grid grid-cols-2 flex-1 min-h-0">
 
         {/* LEFT – Promo */}
         <div className="relative bg-gradient-to-br from-[#0e5ddd] to-[#3b82f6] 
@@ -77,17 +107,35 @@ const SignUp = () => {
         <div className="flex flex-col overflow-y-auto p-4 lg:p-6">
           <div className="max-w-md mx-auto w-full">
 
-            {/* Top Bar */}
-            <div className="flex justify-between items-center mb-2">
-              <div className="bg-gray-100 rounded-full p-0.5 flex items-center">
-                <button className="flex items-center gap-1.5 px-4 py-1.5 bg-[#0e5ddd] text-white rounded-full font-medium text-xs transition">
-                  <LogIn size={14} />
-                  <span>Signup</span>
+            {/* Top Toggle – FIXED & BEAUTIFUL */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-gray-100 rounded-full p-1 flex items-center shadow-sm mb-15">
+
+                {/* SIGNUP BUTTON – Active when we are on Signup */}
+                {/* <button
+                hidden
+                  type="button"
+                  className={`flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm transition-all ${!showLogin
+                      ? 'bg-[#0e5ddd] text-white shadow-md'
+                      : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                >
+                  <UserCog size={16} />
+                  Signup
                 </button>
-                <button className="flex items-center gap-1.5 px-4 py-1.5 text-gray-600 rounded-full font-medium text-xs hover:text-gray-900 transition">
-                  <UserCog size={14} />
-                  <span>Login</span>
-                </button>
+
+                {/* LOGIN BUTTON – Active when we are on Login */}
+                {/* <button
+                  type="button"
+                  onClick={() => setShowLogin(true)}
+                  className={`flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm transition-all ${showLogin
+                      ? 'bg-[#0e5ddd] text-white shadow-md'
+                      : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                >
+                  <LogIn size={16} />
+                  Login
+                </button> */}
               </div>
             </div>
 
@@ -256,7 +304,9 @@ const SignUp = () => {
             </form>
 
             <p className="text-center text-gray-600 mt-1 text-sm">
-              Already have an account? <a href="#" className="text-[#0e5ddd] font-medium hover:underline">Log In</a>
+              Already have an account? <button className="text-[#0e5ddd] font-medium hover:underline">
+                Log In
+              </button>
             </p>
 
             <div className="mt-1 text-center">

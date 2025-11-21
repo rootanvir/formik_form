@@ -6,6 +6,9 @@ import SignUpModal from './components/SignUp';
 import FloatingModal from './components/FloatingModal';
 import './globals.css';
 import Footer from './components/Footer';
+import Login from './components/Login';
+import AuthWrapper from './components/AuthModalContent';
+import AuthModalContent from './components/AuthModalContent';
 
 const SignUpStructure = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +43,7 @@ const SignUpStructure = () => {
                 Start Learning Free
               </button>
               <button className="px-10 py-5 border-2 border-white/50 text-white text-lg font-medium rounded-xl hover:bg-white/10 transition">
-               subscribe
+                subscribe
               </button>
             </div>
           </Vortex>
@@ -90,9 +93,9 @@ const SignUpStructure = () => {
         </div>
       </div>
 
-     
+
       <FloatingModal isOpen={isModalOpen} onClose={closeModal}>
-        <SignUpModal />
+        <AuthModalContent />
       </FloatingModal>
     </>
   );
