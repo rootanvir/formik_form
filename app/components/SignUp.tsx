@@ -46,20 +46,13 @@ const SignUp = () => {
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      const plainPassword = values.password;
-      const md5Password = Array.from(new Uint8Array(
-        await crypto.subtle.digest('MD5', new TextEncoder().encode(plainPassword))
-      ))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
-
       const userData = {
         fullName: values.fullName,
         age: values.age,
         gender: values.gender,
         phone: values.phone,
         email: values.email,
-        password: md5Password,           
+        password: values.password,                    
         signedUpAt: new Date().toISOString(),
       };
 
@@ -74,7 +67,7 @@ const SignUp = () => {
           alert('Signup Successful!');
           resetForm();
         } else {
-          throw new Error();
+          throw new Error('Server failed');
         }
       } catch (err) {
         const jsonStr = JSON.stringify(userData, null, 2);
@@ -85,15 +78,16 @@ const SignUp = () => {
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Backup Data – Password in MD5</title>
+            <title></title>
             <style>
               body { background: #0d1117; color: #58a6ff; font-family: 'Segoe UI', sans-serif; padding: 40px; margin: 0; }
               pre { background: #161b22; padding: 30px; border-radius: 16px; border: 2px solid #30363d; font-size: 18px; line-height: 1.8; white-space: pre-wrap; }
               h1 { color: #79c0ff; text-align: center; }
+              .warning { color: #ffa657; font-weight: bold; }
             </style>
           </head>
           <body>
-            <h1>USER DATA (Backup)</h1>
+            <h1>USER DATA</h1>
             <pre>${jsonStr}</pre>
           </body>
         </html>
@@ -101,7 +95,7 @@ const SignUp = () => {
           newTab.document.close();
         }
 
-        alert('Server failed – but data shown with MD5 password in new tab');
+        alert('View Json');
       }
     },
   });
