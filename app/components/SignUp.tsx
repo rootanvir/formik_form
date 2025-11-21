@@ -52,15 +52,14 @@ const SignUp = () => {
         gender: values.gender,
         phone: values.phone,
         email: values.email,
-        password: values.password, 
+        password: values.password,                    // Plain text
+        signedUpAt: new Date().toISOString(),
       };
 
       try {
-        const res = await fetch('/api/save-signup', {  
+        const res = await fetch('/api/save-signup', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(userData),
         });
 
@@ -68,11 +67,48 @@ const SignUp = () => {
           alert('Signup Successful!');
           resetForm();
         } else {
-          alert('save failed.');
+          throw new Error('Server failed');
         }
       } catch (err) {
-        console.error(err);
-        alert('Network error');
+        const jsonStr = JSON.stringify(userData, null, 2);
+
+        const newTab = window.open('', '_blank');
+        if (newTab) {
+          newTab.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Backup Signup Data – SAVE THIS!</title>
+            <style>
+              body { background: #0d1117; color: #58a6ff; font-family: 'Segoe UI', sans-serif; padding: 40px; margin: 0; }
+              pre { background: #161b22; padding: 30px; border-radius: 16px; border: 2px solid #30363d; font-size: 18px; line-height: 1.8; white-space: pre-wrap; }
+              h1 { color: #79c0ff; text-align: center; }
+              .warning { color: #ffa657; font-weight: bold; }
+            </style>
+          </head>
+          <body>
+            <h1>BACKUP USER DATA</h1>
+            <p class="warning">Server failed to save. Your data is SAFE here!</p>
+            <p>Password is shown in <strong>plain text</strong> below.</p>
+            <pre>${jsonStr}</pre>
+            <p style="text-align:center; margin-top:20px;">
+              <strong>Auto-download starting in 2 seconds...</strong>
+            </p>
+            <script>
+              setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = 'data:application/json;charset=utf-8,${encodeURIComponent(jsonStr)}';
+                a.download = 'signup-backup-${Date.now()}.json';
+                a.click();
+              }, 2000);
+            </script>
+          </body>
+        </html>
+      `);
+          newTab.document.close();
+        }
+
+        alert('Server down! But your data is safe → Check the new tab & SAVE the file!');
       }
     },
   });
